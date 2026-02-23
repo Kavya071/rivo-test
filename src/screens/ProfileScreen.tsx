@@ -1,6 +1,7 @@
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { useAuth } from "@/lib/auth";
+import { useToast } from "@/components/ui/Toast";
 import { useNavigate } from "react-router-dom";
 import { LogOut, Trash2, User, ChevronDown } from "lucide-react";
 import { useState } from "react";
@@ -8,6 +9,7 @@ import { updateProfile, deleteAccount } from "@/lib/api";
 
 export default function ProfileScreen() {
   const { user, logout, refreshUser } = useAuth();
+  const { toast } = useToast();
   const navigate = useNavigate();
   const [name, setName] = useState(user?.name || "");
   const [email, setEmail] = useState(user?.email || "");
@@ -15,6 +17,7 @@ export default function ProfileScreen() {
   const [agentTypeOther, setAgentTypeOther] = useState(user?.agent_type_other || "");
   const [reraNumber, setReraNumber] = useState(user?.rera_number || "");
   const [saving, setSaving] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
   const handleLogout = async () => {
     await logout();
@@ -22,14 +25,12 @@ export default function ProfileScreen() {
   };
 
   const handleDelete = async () => {
-    if (confirm("Are you sure you want to delete your account? This cannot be undone.")) {
-      try {
-        await deleteAccount();
-        await logout();
-        navigate("/");
-      } catch {
-        alert("Failed to delete account.");
-      }
+    try {
+      await deleteAccount();
+      await logout();
+      navigate("/");
+    } catch {
+      toast("Failed to delete account.", "error");
     }
   };
 
@@ -44,9 +45,9 @@ export default function ProfileScreen() {
         rera_number: reraNumber,
       });
       await refreshUser();
-      alert("Profile updated!");
+      toast("Profile updated!");
     } catch {
-      alert("Failed to update profile.");
+      toast("Failed to update profile.", "error");
     } finally {
       setSaving(false);
     }
@@ -157,14 +158,36 @@ export default function ProfileScreen() {
             Sign Out
           </Button>
 
-          <Button
-            variant="ghost"
-            className="w-full text-gray-500 hover:text-red-500 text-sm"
-            onClick={handleDelete}
-          >
-            <Trash2 className="w-4 h-4 mr-2" />
-            Delete Account
-          </Button>
+          {!showDeleteConfirm ? (
+            <Button
+              variant="ghost"
+              className="w-full text-gray-500 hover:text-red-500 text-sm"
+              onClick={() => setShowDeleteConfirm(true)}
+            >
+              <Trash2 className="w-4 h-4 mr-2" />
+              Delete Account
+            </Button>
+          ) : (
+            <div className="p-4 bg-red-500/10 border border-red-500/20 rounded-lg space-y-3">
+              <p className="text-sm text-red-400 text-center">Are you sure? This cannot be undone.</p>
+              <div className="flex gap-3">
+                <Button
+                  variant="ghost"
+                  className="flex-1 text-gray-400 text-sm border border-zinc-800"
+                  onClick={() => setShowDeleteConfirm(false)}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  variant="ghost"
+                  className="flex-1 text-red-500 text-sm border border-red-500/30 bg-red-500/10"
+                  onClick={handleDelete}
+                >
+                  Delete
+                </Button>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>

@@ -1,6 +1,7 @@
 import React from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "@/lib/auth";
+import { ToastProvider } from "@/components/ui/Toast";
 import Layout from "@/components/Layout";
 import LandingScreen from "@/screens/LandingScreen";
 import ReferralBonusScreen from "@/screens/ReferralBonusScreen";
@@ -28,6 +29,7 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
 export default function App() {
   return (
     <AuthProvider>
+      <ToastProvider>
       <BrowserRouter>
         <Routes>
           <Route element={<Layout />}>
@@ -96,6 +98,7 @@ export default function App() {
           </Route>
         </Routes>
       </BrowserRouter>
+      </ToastProvider>
     </AuthProvider>
   );
 }

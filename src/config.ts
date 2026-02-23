@@ -1,62 +1,55 @@
 import { getConfig } from "./lib/api";
 
-// Default config — overridden by backend on load
-export let CONFIG = {
-  COMMISSION: {
-    MIN_PERCENT: 0.45,
-    MAX_PERCENT: 0.60,
-    AVG_PAYOUT: 9000,
-    ESTIMATED_RANGE: {
-      MIN: 8100,
-      MAX: 10800,
-    },
-  },
-  REFERRAL_BONUS: {
-    FIRST_DEAL: 500,
-    SECOND_DEAL: 500,
-    THIRD_DEAL: 1000,
-    TOTAL_POTENTIAL: 2000,
-  },
-  LINKS: {
-    WHATSAPP_PERSONAL: "https://wa.me/971545079577",
-    WHATSAPP_BUSINESS: "https://wa.me/971545079577",
-    RIVO_JOIN: "https://partner.rivo.ae/join",
-  },
-  MESSAGES: {
-    SHARE_TEXT: "Hey, I'm using Rivo to earn mortgage commissions. Join: ",
-    LEAD_SUBMIT_CONFIRM: "We'll contact them within 30 minutes.",
-  },
+const DEFAULTS = {
+  commission_min_percent: 0.45,
+  commission_max_percent: 0.60,
+  avg_payout: 9000,
+  referrer_bonuses: [500, 500, 1000] as number[],
+  whatsapp_personal: "https://wa.me/971545079577",
+  whatsapp_business: "https://wa.me/971545079577",
+  rivo_join_url: "https://partner.rivo.ae/join",
+  referral_share_msg: "Hey, I'm using Rivo to earn mortgage commissions. Join: ",
 };
+
+function buildConfig(data: Record<string, any> = {}) {
+  const min = data.commission_min_percent ?? DEFAULTS.commission_min_percent;
+  const max = data.commission_max_percent ?? DEFAULTS.commission_max_percent;
+  const avg = data.avg_payout ?? DEFAULTS.avg_payout;
+  const bonuses = data.referrer_bonuses ?? DEFAULTS.referrer_bonuses;
+
+  return {
+    COMMISSION: {
+      MIN_PERCENT: min,
+      MAX_PERCENT: max,
+      AVG_PAYOUT: avg,
+      ESTIMATED_RANGE: {
+        MIN: Math.round(avg * 0.9),
+        MAX: Math.round(avg * 1.2),
+      },
+    },
+    REFERRAL_BONUS: {
+      FIRST_DEAL: bonuses[0],
+      SECOND_DEAL: bonuses[1],
+      THIRD_DEAL: bonuses[2],
+      TOTAL_POTENTIAL: bonuses.reduce((a: number, b: number) => a + b, 0),
+    },
+    LINKS: {
+      WHATSAPP_PERSONAL: data.whatsapp_personal ?? DEFAULTS.whatsapp_personal,
+      WHATSAPP_BUSINESS: data.whatsapp_business ?? DEFAULTS.whatsapp_business,
+      RIVO_JOIN: data.rivo_join_url ?? DEFAULTS.rivo_join_url,
+    },
+    MESSAGES: {
+      SHARE_TEXT: data.referral_share_msg ?? DEFAULTS.referral_share_msg,
+    },
+  };
+}
+
+export let CONFIG = buildConfig();
 
 export async function loadConfig() {
   try {
     const data = await getConfig();
-    CONFIG = {
-      COMMISSION: {
-        MIN_PERCENT: data.commission_min_percent ?? 0.45,
-        MAX_PERCENT: data.commission_max_percent ?? 0.60,
-        AVG_PAYOUT: data.avg_payout ?? 9000,
-        ESTIMATED_RANGE: {
-          MIN: Math.round((data.avg_payout ?? 9000) * 0.9),
-          MAX: Math.round((data.avg_payout ?? 9000) * 1.2),
-        },
-      },
-      REFERRAL_BONUS: {
-        FIRST_DEAL: data.referrer_bonuses?.[0] ?? 500,
-        SECOND_DEAL: data.referrer_bonuses?.[1] ?? 500,
-        THIRD_DEAL: data.referrer_bonuses?.[2] ?? 1000,
-        TOTAL_POTENTIAL: (data.referrer_bonuses || [500, 500, 1000]).reduce((a: number, b: number) => a + b, 0),
-      },
-      LINKS: {
-        WHATSAPP_PERSONAL: data.whatsapp_personal ?? "https://wa.me/971545079577",
-        WHATSAPP_BUSINESS: data.whatsapp_business ?? "https://wa.me/971545079577",
-        RIVO_JOIN: data.rivo_join_url ?? "https://partner.rivo.ae/join",
-      },
-      MESSAGES: {
-        SHARE_TEXT: data.referral_share_msg ?? "Hey, I'm using Rivo to earn mortgage commissions. Join: ",
-        LEAD_SUBMIT_CONFIRM: "We'll contact them within 30 minutes.",
-      },
-    };
+    CONFIG = buildConfig(data);
     return CONFIG;
   } catch {
     return CONFIG;

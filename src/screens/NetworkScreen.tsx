@@ -6,6 +6,7 @@ import { Copy, Share2, Users } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { getNetwork } from "@/lib/api";
+import { useToast } from "@/components/ui/Toast";
 
 interface NetworkAgent {
   id: string;
@@ -29,6 +30,7 @@ interface NetworkData {
 
 export default function NetworkScreen() {
   const { user } = useAuth();
+  const { toast } = useToast();
   const [network, setNetwork] = useState<NetworkData | null>(null);
 
   useEffect(() => {
@@ -42,7 +44,7 @@ export default function NetworkScreen() {
 
   const handleCopy = () => {
     navigator.clipboard.writeText(CONFIG.LINKS.RIVO_JOIN + "?ref=" + agentCode);
-    alert("Link copied!");
+    toast("Link copied!");
   };
 
   const handleShare = async () => {
