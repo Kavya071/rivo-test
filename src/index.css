@@ -1,0 +1,21 @@
+@import "tailwindcss";
+
+@theme {
+  --color-rivo-green: #00D084;
+  --color-rivo-bg: #000000;
+  --color-rivo-surface: #18181B;
+  --color-rivo-border: #27272A;
+  --color-rivo-text-primary: #FFFFFF;
+  --color-rivo-text-secondary: #A1A1AA;
+  --font-sans: system-ui, "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+@layer base {
+  body {
+    @apply bg-black text-white antialiased font-sans;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply tracking-tight font-medium;
+  }
+}

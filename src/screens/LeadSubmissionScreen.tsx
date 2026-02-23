@@ -1,0 +1,160 @@
+import React, { useState } from "react";
+import { Button } from "@/components/ui/Button";
+import { Input } from "@/components/ui/Input";
+import { CONFIG, loadConfig } from "@/config";
+import { motion } from "motion/react";
+import { useNavigate } from "react-router-dom";
+import { ArrowLeft, CheckCircle, ShieldCheck } from "lucide-react";
+import { submitClient } from "@/lib/api";
+import { useAuth } from "@/lib/auth";
+import { useEffect } from "react";
+
+export default function LeadSubmissionScreen() {
+  const navigate = useNavigate();
+  const { refreshUser } = useAuth();
+  const [formData, setFormData] = useState({
+    name: "",
+    phone: "",
+    amount: "",
+  });
+  const [commission, setCommission] = useState("0");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    loadConfig();
+  }, []);
+
+  const calculateCommission = () => {
+    const val = formData.amount.replace(/,/g, "");
+    if (!val || isNaN(parseInt(val))) {
+      setCommission("0");
+      return;
+    }
+    setCommission(
+      (parseInt(val) * (CONFIG.COMMISSION.MIN_PERCENT / 100)).toLocaleString()
+    );
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setError("");
+
+    try {
+      const phone = formData.phone.startsWith("+") ? formData.phone : `+971${formData.phone.replace(/\s/g, "")}`;
+      await submitClient({
+        client_name: formData.name,
+        client_phone: phone,
+        expected_mortgage_amount: parseFloat(formData.amount.replace(/,/g, "")),
+        consent: true,
+      });
+      await refreshUser();
+      navigate("/referral-success");
+    } catch (err: any) {
+      if (err?.client_phone) {
+        setError(err.client_phone[0]);
+      } else if (err?.non_field_errors) {
+        setError(err.non_field_errors[0]);
+      } else {
+        setError("Failed to submit referral. Please try again.");
+      }
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  return (
+    <div className="flex flex-col min-h-screen bg-black">
+      <div className="bg-black px-6 pt-6 pb-4 z-10 sticky top-0 border-b border-zinc-800">
+        <div className="flex items-center space-x-4 mb-6">
+          <button onClick={() => navigate(-1)} className="p-2 -ml-2 rounded-full hover:bg-zinc-900 transition-colors">
+            <ArrowLeft className="w-6 h-6 text-white" />
+          </button>
+          <h1 className="text-xl font-medium text-white">New Referral</h1>
+        </div>
+
+        <div className="flex items-center justify-between p-4 bg-zinc-900 rounded-lg border border-zinc-800">
+          <div>
+            <p className="text-sm font-medium text-gray-400">Estimated Commission</p>
+            <p className="text-2xl font-medium text-rivo-green mt-1">AED {commission}</p>
+          </div>
+          <div className="text-right">
+             <p className="text-xs text-gray-500">{CONFIG.COMMISSION.MIN_PERCENT}% of loan</p>
+          </div>
+        </div>
+      </div>
+
+      <motion.div
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="flex-1 p-6 space-y-8"
+      >
+        <form onSubmit={handleSubmit} className="space-y-8">
+          <div className="space-y-6">
+            <h2 className="text-lg font-medium text-white">Client Details</h2>
+
+            <Input
+              label="Full Name"
+              placeholder="e.g. Ahmed Al-Mansoor"
+              value={formData.name}
+              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+              required
+              className="bg-zinc-900 border-zinc-800 text-white"
+            />
+
+            <Input
+              label="Expected Loan Amount (AED)"
+              type="number"
+              placeholder="e.g. 1,500,000"
+              value={formData.amount}
+              onChange={(e) => setFormData({ ...formData, amount: e.target.value })}
+              onBlur={calculateCommission}
+              required
+              className="bg-zinc-900 border-zinc-800 text-white"
+            />
+
+            <div className="space-y-2">
+              <label className="text-sm font-medium text-gray-400 ml-1">Phone Number</label>
+              <div className="flex space-x-3">
+                <div className="w-24 h-14 bg-zinc-900 rounded-lg flex items-center justify-center border border-zinc-800 text-white font-medium">
+                  🇦🇪 +971
+                </div>
+                <Input
+                  type="tel"
+                  placeholder="50 123 4567"
+                  className="flex-1 bg-zinc-900 border-zinc-800 text-white"
+                  value={formData.phone}
+                  onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                  required
+                />
+              </div>
+            </div>
+          </div>
+
+          {error && (
+            <div className="p-3 bg-red-500/10 border border-red-500/20 rounded-lg">
+              <p className="text-sm text-red-400">{error}</p>
+            </div>
+          )}
+
+          <div className="flex items-start space-x-3 p-4 bg-zinc-900 rounded-lg border border-zinc-800">
+            <ShieldCheck className="w-5 h-5 text-gray-400 flex-shrink-0 mt-0.5" />
+            <p className="text-xs text-gray-400 leading-relaxed">
+              We'll contact them within 30 minutes. By submitting, you confirm you have the client's consent to be contacted by Rivo.
+            </p>
+          </div>
+
+          <Button
+            type="submit"
+            className="w-full h-14 text-lg font-medium rounded-lg"
+            isLoading={isSubmitting}
+            disabled={!formData.name || !formData.phone || !formData.amount}
+          >
+            Submit Referral
+          </Button>
+        </form>
+      </motion.div>
+    </div>
+  );
+}
