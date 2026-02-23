@@ -118,8 +118,7 @@ export default function LandingScreen() {
           <div className="mt-12 py-6 border-t border-zinc-800 border-b">
             <div className="flex items-center space-x-3 mb-1">
               <div className="flex items-baseline space-x-1">
-                <span className="text-4xl font-medium tracking-tight text-white">AED {CONFIG.COMMISSION.AVG_PAYOUT.toLocaleString()}</span>
-                <span className="text-rivo-green text-xl font-medium">^</span>
+                <span className="text-4xl font-medium tracking-tight text-white">AED {CONFIG.COMMISSION.AVG_PAYOUT.toLocaleString()}<sup className="text-rivo-green text-lg font-medium align-super">^</sup></span>
               </div>
               <div className="px-2 py-0.5 rounded-full border border-rivo-green/50 bg-black flex items-center shadow-[0_0_8px_rgba(0,208,132,0.2)]">
                 <span className="text-[10px] font-bold text-rivo-green tracking-wide">{CONFIG.COMMISSION.MIN_PERCENT}% - {CONFIG.COMMISSION.MAX_PERCENT}%</span>
