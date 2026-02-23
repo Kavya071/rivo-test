@@ -1,5 +1,3 @@
-import { Button } from "@/components/ui/Button";
-import { Input } from "@/components/ui/Input";
 import { motion } from "motion/react";
 import { useState, useEffect } from "react";
 import { Filter, Plus, Search } from "lucide-react";
@@ -121,10 +119,7 @@ export default function ActivityScreen() {
           </div>
         ) : clients.length === 0 ? (
           <div className="text-center py-12">
-            <p className="text-gray-500 mb-4">No clients yet.</p>
-            <Button onClick={() => navigate("/refer-client")} className="mx-auto">
-              Refer your first client
-            </Button>
+            <p className="text-gray-500">No clients yet.</p>
           </div>
         ) : (
           clients.map((client, idx) => (
