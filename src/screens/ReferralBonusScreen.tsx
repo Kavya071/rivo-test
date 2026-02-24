@@ -14,21 +14,12 @@ export default function ReferralBonusScreen() {
     loadConfig();
   }, []);
 
-  const handleShare = async () => {
+  const handleShare = () => {
     const url = `https://partners.rivo.ae?ref=${user?.agent_code}`;
-    if (navigator.share) {
-      try {
-        await navigator.share({
-          title: "Join Rivo Partner Network",
-          text: CONFIG.MESSAGES.SHARE_TEXT,
-          url,
-        });
-      } catch (error) {
-        console.log("Error sharing", error);
-      }
-    } else {
-      window.open(`https://wa.me/?text=${encodeURIComponent(CONFIG.MESSAGES.SHARE_TEXT + url)}`, "_blank");
-    }
+    const message = CONFIG.MESSAGES.SHARE_TEXT.includes("{url}")
+      ? CONFIG.MESSAGES.SHARE_TEXT.replace("{url}", url)
+      : CONFIG.MESSAGES.SHARE_TEXT + url;
+    window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, "_blank");
   };
 
   return (

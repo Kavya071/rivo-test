@@ -49,7 +49,10 @@ export default function NetworkScreen() {
 
   const handleShare = () => {
     const url = `https://partners.rivo.ae?ref=${agentCode}`;
-    window.open(`https://wa.me/?text=${encodeURIComponent(CONFIG.MESSAGES.SHARE_TEXT + url)}`, "_blank");
+    const message = CONFIG.MESSAGES.SHARE_TEXT.includes("{url}")
+      ? CONFIG.MESSAGES.SHARE_TEXT.replace("{url}", url)
+      : CONFIG.MESSAGES.SHARE_TEXT + url;
+    window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, "_blank");
   };
 
   const formatDate = (dateStr: string) => {

@@ -7,7 +7,7 @@ const DEFAULTS = {
   referrer_bonuses: [500, 500, 1000] as number[],
   whatsapp_personal: "https://wa.me/971545079577",
   whatsapp_business: "https://wa.me/971545079577",
-  referral_share_msg: "Hey, I'm using Rivo to earn mortgage commissions. Join: ",
+  referral_share_msg: "Hey, I'm using Rivo to earn mortgage commissions. Join here: ",
 };
 
 export interface HomeBanner {
