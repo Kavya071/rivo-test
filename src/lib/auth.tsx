@@ -32,7 +32,10 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<User | null>(() => {
+    const cached = localStorage.getItem("rivo_user");
+    return cached ? JSON.parse(cached) : null;
+  });
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -43,9 +46,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
           setUser(agent);
           localStorage.setItem("rivo_user", JSON.stringify(agent));
         })
-        .catch(() => {
-          localStorage.removeItem("rivo_token");
-          localStorage.removeItem("rivo_user");
+        .catch((err) => {
+          // Only clear auth on 401 (invalid token), not on network errors
+          if (err?.status === 401) {
+            setUser(null);
+            localStorage.removeItem("rivo_token");
+            localStorage.removeItem("rivo_user");
+          }
         })
         .finally(() => setLoading(false));
     } else {

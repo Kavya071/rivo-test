@@ -43,23 +43,13 @@ export default function NetworkScreen() {
   const agentCode = network?.agent_code || user?.agent_code || "";
 
   const handleCopy = () => {
-    navigator.clipboard.writeText(CONFIG.LINKS.RIVO_JOIN + "?ref=" + agentCode);
+    navigator.clipboard.writeText("https://partners.rivo.ae?ref=" + agentCode);
     toast("Link copied!");
   };
 
-  const handleShare = async () => {
-    const url = `${CONFIG.LINKS.RIVO_JOIN}?ref=${agentCode}`;
-    if (navigator.share) {
-      try {
-        await navigator.share({
-          title: "Join Rivo Partner Network",
-          text: CONFIG.MESSAGES.SHARE_TEXT,
-          url,
-        });
-      } catch {}
-    } else {
-      window.open(`https://wa.me/?text=${encodeURIComponent(CONFIG.MESSAGES.SHARE_TEXT + url)}`, "_blank");
-    }
+  const handleShare = () => {
+    const url = `https://partners.rivo.ae?ref=${agentCode}`;
+    window.open(`https://wa.me/?text=${encodeURIComponent(CONFIG.MESSAGES.SHARE_TEXT + url)}`, "_blank");
   };
 
   const formatDate = (dateStr: string) => {

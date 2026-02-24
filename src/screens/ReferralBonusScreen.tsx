@@ -15,7 +15,7 @@ export default function ReferralBonusScreen() {
   }, []);
 
   const handleShare = async () => {
-    const url = `${CONFIG.LINKS.RIVO_JOIN}?ref=${user?.agent_code}`;
+    const url = `https://partners.rivo.ae?ref=${user?.agent_code}`;
     if (navigator.share) {
       try {
         await navigator.share({

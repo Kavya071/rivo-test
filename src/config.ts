@@ -7,7 +7,6 @@ const DEFAULTS = {
   referrer_bonuses: [500, 500, 1000] as number[],
   whatsapp_personal: "https://wa.me/971545079577",
   whatsapp_business: "https://wa.me/971545079577",
-  rivo_join_url: "https://partner.rivo.ae/join",
   referral_share_msg: "Hey, I'm using Rivo to earn mortgage commissions. Join: ",
 };
 
@@ -47,7 +46,6 @@ function buildConfig(data: Record<string, any> = {}) {
     LINKS: {
       WHATSAPP_PERSONAL: data.whatsapp_personal ?? DEFAULTS.whatsapp_personal,
       WHATSAPP_BUSINESS: data.whatsapp_business ?? DEFAULTS.whatsapp_business,
-      RIVO_JOIN: data.rivo_join_url ?? DEFAULTS.rivo_join_url,
     },
     MESSAGES: {
       SHARE_TEXT: data.referral_share_msg ?? DEFAULTS.referral_share_msg,
