@@ -2,11 +2,12 @@ import React from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { AuthProvider, useAuth } from "@/lib/auth";
 import { ToastProvider } from "@/components/ui/Toast";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 import Layout from "@/components/Layout";
 import LandingScreen from "@/screens/LandingScreen";
 import ReferralBonusScreen from "@/screens/ReferralBonusScreen";
 import HomeScreen from "@/screens/HomeScreen";
-import ActivityScreen from "@/screens/ActivityScreen";
+import ClientsScreen from "@/screens/ClientsScreen";
 import NetworkScreen from "@/screens/NetworkScreen";
 import ProfileScreen from "@/screens/ProfileScreen";
 import LeadSubmissionScreen from "@/screens/LeadSubmissionScreen";
@@ -28,6 +29,7 @@ function ProtectedRoute({ children }: { children: React.ReactNode }) {
 
 export default function App() {
   return (
+    <GoogleOAuthProvider clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID || ''}>
     <AuthProvider>
       <ToastProvider>
       <BrowserRouter>
@@ -56,10 +58,10 @@ export default function App() {
               }
             />
             <Route
-              path="/activity"
+              path="/clients"
               element={
                 <ProtectedRoute>
-                  <ActivityScreen />
+                  <ClientsScreen />
                 </ProtectedRoute>
               }
             />
@@ -100,5 +102,6 @@ export default function App() {
       </BrowserRouter>
       </ToastProvider>
     </AuthProvider>
+    </GoogleOAuthProvider>
   );
 }

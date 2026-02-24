@@ -11,6 +11,17 @@ const DEFAULTS = {
   referral_share_msg: "Hey, I'm using Rivo to earn mortgage commissions. Join: ",
 };
 
+export interface HomeBanner {
+  id: number;
+  title: string;
+  subtitle: string;
+  icon: string;
+  thumbnail: string;
+  cta_text: string;
+  cta_link: string;
+  order: number;
+}
+
 function buildConfig(data: Record<string, any> = {}) {
   const min = data.commission_min_percent ?? DEFAULTS.commission_min_percent;
   const max = data.commission_max_percent ?? DEFAULTS.commission_max_percent;
@@ -41,6 +52,7 @@ function buildConfig(data: Record<string, any> = {}) {
     MESSAGES: {
       SHARE_TEXT: data.referral_share_msg ?? DEFAULTS.referral_share_msg,
     },
+    HOME_BANNERS: (data.home_banners || []) as HomeBanner[],
   };
 }
 

@@ -88,6 +88,21 @@ export function listClients(search = '', status = '') {
   return request(`/clients/?${params.toString()}`);
 }
 
+// OAuth
+export function connectGoogle(credential: string) {
+  return request('/agents/connect-google/', {
+    method: 'POST',
+    body: JSON.stringify({ credential }),
+  });
+}
+
+export function connectOutlook(code: string, redirectUri: string) {
+  return request('/agents/connect-outlook/', {
+    method: 'POST',
+    body: JSON.stringify({ code, redirect_uri: redirectUri }),
+  });
+}
+
 // Config
 export function getConfig() {
   return request('/config/');

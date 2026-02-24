@@ -1,18 +1,19 @@
-import { Button } from "@/components/ui/Button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/Card";
-import { CONFIG, loadConfig } from "@/config";
+import { CONFIG, loadConfig, HomeBanner } from "@/config";
 import { useAuth } from "@/lib/auth";
 import { motion } from "motion/react";
-import { Link, useNavigate } from "react-router-dom";
-import { ArrowRight, Bell, ChevronRight, Plus, Users, Wallet } from "lucide-react";
-import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { ArrowRight, ChevronRight, Users, ExternalLink } from "lucide-react";
+import { useEffect, useState } from "react";
 
 export default function HomeScreen() {
   const { user, refreshUser } = useAuth();
   const navigate = useNavigate();
+  const [banners, setBanners] = useState<HomeBanner[]>([]);
 
   useEffect(() => {
-    loadConfig();
+    loadConfig().then((cfg) => {
+      setBanners(cfg.HOME_BANNERS);
+    });
     refreshUser();
   }, []);
 
@@ -105,6 +106,41 @@ export default function HomeScreen() {
             </motion.button>
           </div>
         </div>
+
+        {/* Home Banners */}
+        {banners.length > 0 && (
+          <div className="space-y-4">
+            {banners.map((banner) => (
+              <motion.div
+                key={banner.id}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="relative overflow-hidden rounded-lg border border-zinc-800 bg-zinc-900"
+              >
+                {banner.thumbnail && (
+                  <img src={banner.thumbnail} alt="" className="w-full h-40 object-cover" />
+                )}
+                <div className="p-4">
+                  <h3 className="font-medium text-white text-base">{banner.title}</h3>
+                  {banner.subtitle && (
+                    <p className="text-sm text-gray-400 mt-1">{banner.subtitle}</p>
+                  )}
+                  {banner.cta_text && banner.cta_link && (
+                    <a
+                      href={banner.cta_link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-2 mt-3 text-sm font-medium text-rivo-green hover:underline"
+                    >
+                      {banner.cta_text}
+                      <ExternalLink className="w-4 h-4" />
+                    </a>
+                  )}
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        )}
 
         {/* Complete Profile Banner */}
         {!user?.is_profile_complete && (

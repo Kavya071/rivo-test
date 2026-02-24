@@ -20,6 +20,7 @@ export default function LeadSubmissionScreen() {
   const [commission, setCommission] = useState("0");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
+  const [phoneError, setPhoneError] = useState("");
 
   useEffect(() => {
     loadConfig();
@@ -36,8 +37,21 @@ export default function LeadSubmissionScreen() {
     );
   };
 
+  const validatePhone = (value: string): string => {
+    const digits = value.replace(/\D/g, "");
+    if (!digits) return "";
+    if (digits.length < 7) return "Phone number is too short";
+    if (digits.length > 15) return "Phone number is too long";
+    return "";
+  };
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    const phoneErr = validatePhone(formData.phone);
+    if (phoneErr) {
+      setPhoneError(phoneErr);
+      return;
+    }
     setIsSubmitting(true);
     setError("");
 
@@ -125,10 +139,17 @@ export default function LeadSubmissionScreen() {
                   placeholder="50 123 4567"
                   className="flex-1 bg-zinc-900 border-zinc-800 text-white"
                   value={formData.phone}
-                  onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                  onChange={(e) => {
+                    setFormData({ ...formData, phone: e.target.value });
+                    if (phoneError) setPhoneError("");
+                  }}
+                  onBlur={() => setPhoneError(validatePhone(formData.phone))}
                   required
                 />
               </div>
+              {phoneError && (
+                <p className="text-sm text-red-400 ml-1">{phoneError}</p>
+              )}
             </div>
           </div>
 
@@ -149,7 +170,7 @@ export default function LeadSubmissionScreen() {
             type="submit"
             className="w-full h-14 text-lg font-medium rounded-lg"
             isLoading={isSubmitting}
-            disabled={!formData.name || !formData.phone || !formData.amount}
+            disabled={!formData.name || !formData.phone || !formData.amount || !!phoneError}
           >
             Submit Referral
           </Button>

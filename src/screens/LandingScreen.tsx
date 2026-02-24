@@ -143,7 +143,7 @@ export default function LandingScreen() {
 
         <div className="text-center">
           <button onClick={handleWhatsAppClick} className="text-sm font-medium text-gray-400 hover:text-white transition-colors">
-            Already registered? <span className="underline text-white">Sign In</span>
+            Already have an account? <span className="underline text-white">Sign In</span>
           </button>
         </div>
       </div>

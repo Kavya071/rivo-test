@@ -25,7 +25,7 @@ const STATUS_COLORS: Record<string, string> = {
 
 const STATUS_OPTIONS = ["All", "Submitted", "Contacted", "Qualified", "Approved", "Disbursed"];
 
-export default function ActivityScreen() {
+export default function ClientsScreen() {
   const navigate = useNavigate();
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("All");

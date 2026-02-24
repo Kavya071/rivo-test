@@ -20,7 +20,7 @@ export default function Layout() {
         {!hideNav && (
           <nav className="fixed bottom-0 w-full md:max-w-2xl lg:max-w-4xl xl:max-w-5xl bg-black border-t border-zinc-800 px-6 py-4 flex justify-between items-center z-50 left-1/2 -translate-x-1/2 transition-all duration-300">
             <NavItem to="/home" icon={Home} label="Home" active={location.pathname === "/home"} />
-            <NavItem to="/activity" icon={Briefcase} label="Clients" active={location.pathname === "/activity"} />
+            <NavItem to="/clients" icon={Briefcase} label="Clients" active={location.pathname === "/clients"} />
             <NavItem to="/network" icon={Users} label="Network" active={location.pathname === "/network"} />
             <NavItem to="/profile" icon={User} label="Profile" active={location.pathname === "/profile"} />
           </nav>

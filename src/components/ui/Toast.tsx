@@ -1,4 +1,4 @@
-import { createContext, useContext, useState, useCallback } from "react";
+import React, { createContext, useContext, useState, useCallback } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { Check, X, AlertTriangle } from "lucide-react";
 

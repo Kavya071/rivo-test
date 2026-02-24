@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/Button";
-import { Activity, Check, MessageCircle } from "lucide-react";
+import { Briefcase, Check, MessageCircle } from "lucide-react";
 import { motion } from "motion/react";
 
 export default function ReferralSuccessScreen() {
@@ -53,13 +53,13 @@ export default function ReferralSuccessScreen() {
             </div>
           </div>
 
-          {/* Activity Tab Info */}
+          {/* Clients Tab Info */}
           <div className="flex items-center p-4 bg-zinc-900 rounded-lg border border-zinc-800">
             <div className="w-10 h-10 rounded-full bg-zinc-800 flex items-center justify-center mr-4 flex-shrink-0">
-              <Activity className="w-5 h-5 text-rivo-green animate-pulse" />
+              <Briefcase className="w-5 h-5 text-rivo-green animate-pulse" />
             </div>
             <div className="text-left">
-              <p className="text-white font-medium">Track in Activity</p>
+              <p className="text-white font-medium">Track in Clients</p>
               <p className="text-sm text-gray-500">View progress in your dashboard.</p>
             </div>
           </div>
