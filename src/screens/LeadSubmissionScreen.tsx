@@ -71,7 +71,7 @@ export default function LeadSubmissionScreen() {
       } else if (err?.non_field_errors) {
         setError(err.non_field_errors[0]);
       } else {
-        setError("Failed to submit referral. Please try again.");
+        setError("Failed to submit client. Please try again.");
       }
     } finally {
       setIsSubmitting(false);
@@ -85,7 +85,7 @@ export default function LeadSubmissionScreen() {
           <button onClick={() => navigate(-1)} className="p-2 -ml-2 rounded-full hover:bg-zinc-900 transition-colors">
             <ArrowLeft className="w-6 h-6 text-white" />
           </button>
-          <h1 className="text-xl font-medium text-white">New Referral</h1>
+          <h1 className="text-xl font-medium text-white">New Client</h1>
         </div>
 
         <div className="flex items-center justify-between p-4 bg-zinc-900 rounded-lg border border-zinc-800">
@@ -140,7 +140,8 @@ export default function LeadSubmissionScreen() {
                   className="flex-1 bg-zinc-900 border-zinc-800 text-white"
                   value={formData.phone}
                   onChange={(e) => {
-                    setFormData({ ...formData, phone: e.target.value });
+                    const val = e.target.value.replace(/[^0-9\s]/g, "");
+                    setFormData({ ...formData, phone: val });
                     if (phoneError) setPhoneError("");
                   }}
                   onBlur={() => setPhoneError(validatePhone(formData.phone))}
@@ -172,7 +173,7 @@ export default function LeadSubmissionScreen() {
             isLoading={isSubmitting}
             disabled={!formData.name || !formData.phone || !formData.amount || !!phoneError}
           >
-            Submit Referral
+            Submit Client
           </Button>
         </form>
       </motion.div>

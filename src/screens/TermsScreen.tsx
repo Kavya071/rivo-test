@@ -23,8 +23,8 @@ export default function TermsScreen() {
         </section>
 
         <section>
-          <h2 className="text-white font-medium mb-2">2. Referral Program</h2>
-          <p>Commissions are paid only upon successful disbursal of the loan. Rivo reserves the right to modify commission structures with prior notice.</p>
+          <h2 className="text-white font-medium mb-2">2. Agent Referral Bonus Program</h2>
+          <p>Bonuses are paid only upon successful disbursal of the loan by the referred agent's client. Rivo reserves the right to modify bonus structures with prior notice.</p>
         </section>
 
         <section>

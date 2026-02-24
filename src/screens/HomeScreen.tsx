@@ -76,7 +76,7 @@ export default function HomeScreen() {
                   <ArrowRight className="w-5 h-5 -rotate-45" />
                 </div>
                 <div className="text-left flex-1 min-w-0">
-                  <h3 className="font-medium text-white text-base truncate">Refer Client</h3>
+                  <h3 className="font-medium text-white text-base truncate">Submit Client</h3>
                   <div className="flex flex-wrap items-center gap-2 mt-1">
                     <p className="text-sm text-gray-400 whitespace-nowrap">Earn ~AED {CONFIG.COMMISSION.AVG_PAYOUT.toLocaleString()}</p>
                     <div className="px-2 py-0.5 rounded-full border border-rivo-green/50 bg-black flex items-center shadow-[0_0_8px_rgba(0,208,132,0.2)] whitespace-nowrap">

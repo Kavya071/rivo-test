@@ -24,7 +24,7 @@ export default function ReferralSuccessScreen() {
           transition={{ delay: 0.2, duration: 0.5 }}
           className="text-3xl font-medium text-white mb-4 tracking-tight"
         >
-          Referral Submitted
+          Client Submitted
         </motion.h1>
 
         <motion.p 
@@ -33,7 +33,7 @@ export default function ReferralSuccessScreen() {
           transition={{ delay: 0.3, duration: 0.5 }}
           className="text-gray-400 text-lg mb-12 leading-relaxed"
         >
-          We've received your referral details.
+          We've received your client details.
         </motion.p>
 
         <motion.div 
