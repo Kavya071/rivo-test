@@ -5,6 +5,7 @@ COPY package.json package-lock.json ./
 RUN npm ci
 COPY . .
 ENV VITE_GOOGLE_CLIENT_ID=331738587654-087blgg1lca6c1ja4sr310ivd7622oe8.apps.googleusercontent.com
+ENV VITE_MICROSOFT_CLIENT_ID=810d9324-17ba-4a15-ae8b-b2b9b1f61b83
 RUN npm run build
 
 # Stage 2: Serve
