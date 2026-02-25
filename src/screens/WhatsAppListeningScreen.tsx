@@ -27,6 +27,7 @@ export default function WhatsAppListeningScreen() {
           clearInterval(pollInterval);
           loginWithToken(data.token, data.agent);
           localStorage.removeItem("rivo_verify_code");
+          localStorage.removeItem("rivo_referral_code");
           // New agent → referral bonus screen, existing → home
           if (!data.agent.has_completed_first_action) {
             navigate("/referral-bonus", { replace: true });

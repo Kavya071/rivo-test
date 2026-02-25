@@ -75,6 +75,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     setUser(null);
     localStorage.removeItem("rivo_token");
     localStorage.removeItem("rivo_user");
+    localStorage.removeItem("rivo_referral_code");
+    localStorage.removeItem("rivo_wa_type");
   };
 
   const refreshUser = async () => {
