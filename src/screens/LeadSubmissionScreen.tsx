@@ -1,13 +1,12 @@
-import React, { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/Button";
 import { Input } from "@/components/ui/Input";
 import { CONFIG, loadConfig } from "@/config";
 import { motion } from "motion/react";
 import { useNavigate } from "react-router-dom";
-import { ArrowLeft, CheckCircle, ShieldCheck } from "lucide-react";
+import { ArrowLeft, ShieldCheck } from "lucide-react";
 import { submitClient } from "@/lib/api";
 import { useAuth } from "@/lib/auth";
-import { useEffect } from "react";
 
 const COUNTRY_CODES = [
   { code: "+971", flag: "🇦🇪", label: "UAE" },

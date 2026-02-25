@@ -1,8 +1,8 @@
 import { Button } from "@/components/ui/Button";
 import { CONFIG, loadConfig } from "@/config";
 import { motion, AnimatePresence } from "motion/react";
-import { Link, useNavigate, useSearchParams } from "react-router-dom";
-import { Activity, Users, Zap, X, CheckCircle2 } from "lucide-react";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { Activity, Users, Zap } from "lucide-react";
 import { useState, useEffect } from "react";
 import { initWhatsApp, resolveReferralCode } from "@/lib/api";
 import { useAuth } from "@/lib/auth";

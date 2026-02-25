@@ -3,7 +3,7 @@ import { CONFIG, loadConfig } from "@/config";
 import { useAuth } from "@/lib/auth";
 import { motion } from "motion/react";
 import { useNavigate, Link } from "react-router-dom";
-import { Share2, X } from "lucide-react";
+import { X } from "lucide-react";
 import { useEffect, useState } from "react";
 
 function ordinal(n: number) {
