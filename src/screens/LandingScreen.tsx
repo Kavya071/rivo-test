@@ -60,20 +60,20 @@ export default function LandingScreen() {
       const data = await initWhatsApp(referralCode, type === "business");
       localStorage.setItem("rivo_verify_code", data.code);
 
-      // Extract phone and message from wa.me URL
       const waUrl = new URL(data.whatsapp_url);
       const phone = waUrl.pathname.replace("/", "");
-      const text = waUrl.searchParams.get("text") || "";
+      const text = encodeURIComponent(waUrl.searchParams.get("text") || "");
+      const scheme = type === "business" ? "whatsapp-smb" : "whatsapp";
       const isAndroid = /android/i.test(navigator.userAgent);
 
       if (isAndroid) {
         const pkg = type === "business" ? "com.whatsapp.w4b" : "com.whatsapp";
-        window.location.href = `intent://send?phone=${phone}&text=${encodeURIComponent(text)}#Intent;scheme=whatsapp;package=${pkg};end`;
+        window.location.href = `intent://send?phone=${phone}&text=${text}#Intent;scheme=${scheme};package=${pkg};S.browser_fallback_url=${encodeURIComponent(data.whatsapp_url)};end`;
       } else {
-        window.open(data.whatsapp_url, "_blank");
+        window.location.href = `${scheme}://send?phone=${phone}&text=${text}`;
       }
 
-      navigate("/whatsapp-verify");
+      setTimeout(() => navigate("/whatsapp-verify"), 500);
     } catch (err) {
       console.error("Failed to init WhatsApp", err);
     }
