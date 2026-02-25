@@ -1,10 +1,14 @@
 import { Button } from "@/components/ui/Button";
-import { ArrowLeft, CheckCircle2, Users, Zap, Activity } from "lucide-react";
+import { ArrowLeft, Users, Zap, Briefcase } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "motion/react";
+import { CONFIG, loadConfig } from "@/config";
+import { useEffect } from "react";
 
 export default function ReferralInfoScreen() {
   const navigate = useNavigate();
+
+  useEffect(() => { loadConfig(); }, []);
 
   return (
     <div className="flex flex-col min-h-screen bg-black pb-24">
@@ -44,7 +48,7 @@ export default function ReferralInfoScreen() {
 
             <div className="bg-zinc-900/50 border border-zinc-800 rounded-xl p-6">
               <div className="w-12 h-12 rounded-full bg-blue-500/10 flex items-center justify-center mb-4">
-                <Activity className="w-6 h-6 text-blue-500" />
+                <Briefcase className="w-6 h-6 text-blue-500" />
               </div>
               <h3 className="text-xl font-medium text-white mb-2">2. They Close Deals</h3>
               <p className="text-gray-400 leading-relaxed">
@@ -64,19 +68,19 @@ export default function ReferralInfoScreen() {
               <div className="space-y-3 bg-black/50 rounded-lg p-4 border border-zinc-800">
                 <div className="flex justify-between items-center">
                   <span className="text-gray-400 text-sm">1st Deal</span>
-                  <span className="text-white font-medium">AED 500 Bonus</span>
+                  <span className="text-white font-medium">AED {CONFIG.REFERRAL_BONUS.FIRST_DEAL.toLocaleString()} Bonus</span>
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-gray-400 text-sm">2nd Deal</span>
-                  <span className="text-white font-medium">AED 500 Bonus</span>
+                  <span className="text-white font-medium">AED {CONFIG.REFERRAL_BONUS.SECOND_DEAL.toLocaleString()} Bonus</span>
                 </div>
                 <div className="flex justify-between items-center">
                   <span className="text-gray-400 text-sm">3rd Deal</span>
-                  <span className="text-white font-medium">AED 1,000 Bonus</span>
+                  <span className="text-white font-medium">AED {CONFIG.REFERRAL_BONUS.THIRD_DEAL.toLocaleString()} Bonus</span>
                 </div>
                 <div className="pt-2 mt-2 border-t border-zinc-800 flex justify-between items-center">
                   <span className="text-rivo-green text-sm font-medium">Total Potential</span>
-                  <span className="text-rivo-green font-bold">AED 2,000 per Agent</span>
+                  <span className="text-rivo-green font-bold">AED {CONFIG.REFERRAL_BONUS.TOTAL_POTENTIAL.toLocaleString()} per Agent</span>
                 </div>
               </div>
             </div>
