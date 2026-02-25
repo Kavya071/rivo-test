@@ -6,7 +6,6 @@ import { Activity, Users, Zap } from "lucide-react";
 import { useState, useEffect } from "react";
 import { initWhatsApp, resolveReferralCode } from "@/lib/api";
 import { useAuth } from "@/lib/auth";
-import { openWhatsAppChat } from "@/lib/whatsapp";
 
 export default function LandingScreen() {
   const navigate = useNavigate();
@@ -60,12 +59,9 @@ export default function LandingScreen() {
     try {
       const data = await initWhatsApp(referralCode, type === "business");
       localStorage.setItem("rivo_verify_code", data.code);
-
-      const waUrl = new URL(data.whatsapp_url);
-      const phone = waUrl.pathname.replace("/", "");
-      const text = waUrl.searchParams.get("text") || "";
-      openWhatsAppChat(phone, text);
-
+      // Use wa.me URL directly — custom schemes (whatsapp://) get blocked
+      // after async calls because the browser no longer considers it a user gesture
+      window.location.href = data.whatsapp_url;
       setTimeout(() => navigate("/whatsapp-verify"), 500);
     } catch (err) {
       console.error("Failed to init WhatsApp", err);
