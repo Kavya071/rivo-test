@@ -120,10 +120,13 @@ export default function LeadSubmissionScreen() {
 
             <Input
               label="Expected Loan Amount (AED)"
-              type="number"
-              placeholder="e.g. 1,500,000"
+              inputMode="numeric"
+              placeholder="e.g. 1500000"
               value={formData.amount}
-              onChange={(e) => setFormData({ ...formData, amount: e.target.value })}
+              onChange={(e) => {
+                const val = e.target.value.replace(/[^0-9]/g, "");
+                setFormData({ ...formData, amount: val });
+              }}
               onBlur={calculateCommission}
               required
               className="bg-zinc-900 border-zinc-800 text-white"
