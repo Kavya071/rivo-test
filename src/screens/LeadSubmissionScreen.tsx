@@ -9,6 +9,20 @@ import { submitClient } from "@/lib/api";
 import { useAuth } from "@/lib/auth";
 import { useEffect } from "react";
 
+const COUNTRY_CODES = [
+  { code: "+971", flag: "🇦🇪", label: "UAE" },
+  { code: "+91", flag: "🇮🇳", label: "IN" },
+  { code: "+44", flag: "🇬🇧", label: "UK" },
+  { code: "+1", flag: "🇺🇸", label: "US" },
+  { code: "+966", flag: "🇸🇦", label: "SA" },
+  { code: "+968", flag: "🇴🇲", label: "OM" },
+  { code: "+974", flag: "🇶🇦", label: "QA" },
+  { code: "+973", flag: "🇧🇭", label: "BH" },
+  { code: "+965", flag: "🇰🇼", label: "KW" },
+  { code: "+92", flag: "🇵🇰", label: "PK" },
+  { code: "+63", flag: "🇵🇭", label: "PH" },
+];
+
 export default function LeadSubmissionScreen() {
   const navigate = useNavigate();
   const { refreshUser } = useAuth();
@@ -17,6 +31,7 @@ export default function LeadSubmissionScreen() {
     phone: "",
     amount: "",
   });
+  const [countryCode, setCountryCode] = useState("+971");
   const [commission, setCommission] = useState("0");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
@@ -57,7 +72,7 @@ export default function LeadSubmissionScreen() {
     setError("");
 
     try {
-      const phone = formData.phone.startsWith("+") ? formData.phone : `+971${formData.phone.replace(/\s/g, "")}`;
+      const phone = `${countryCode}${formData.phone.replace(/\s/g, "")}`;
       await submitClient({
         client_name: formData.name,
         client_phone: phone,
@@ -135,9 +150,17 @@ export default function LeadSubmissionScreen() {
             <div className="space-y-2">
               <label className="text-sm font-medium text-gray-400 ml-1">Phone Number</label>
               <div className="flex space-x-3">
-                <div className="w-24 h-14 bg-zinc-900 rounded-lg flex items-center justify-center border border-zinc-800 text-white font-medium">
-                  🇦🇪 +971
-                </div>
+                <select
+                  value={countryCode}
+                  onChange={(e) => setCountryCode(e.target.value)}
+                  className="h-14 px-3 bg-zinc-900 rounded-lg border border-zinc-800 text-white font-medium appearance-none text-sm"
+                >
+                  {COUNTRY_CODES.map((c) => (
+                    <option key={c.code} value={c.code}>
+                      {c.flag} {c.code}
+                    </option>
+                  ))}
+                </select>
                 <Input
                   type="tel"
                   placeholder="50 123 4567"
