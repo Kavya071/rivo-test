@@ -107,8 +107,3 @@ export function connectOutlook(code: string, redirectUri: string) {
 export function getConfig() {
   return request('/config/');
 }
-
-// Bonuses
-export function getMyBonuses() {
-  return request('/referrals/bonuses/');
-}

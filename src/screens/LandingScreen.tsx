@@ -6,6 +6,7 @@ import { Activity, Users, Zap } from "lucide-react";
 import { useState, useEffect } from "react";
 import { initWhatsApp, resolveReferralCode } from "@/lib/api";
 import { useAuth } from "@/lib/auth";
+import { openWhatsAppChat } from "@/lib/whatsapp";
 
 export default function LandingScreen() {
   const navigate = useNavigate();
@@ -62,16 +63,8 @@ export default function LandingScreen() {
 
       const waUrl = new URL(data.whatsapp_url);
       const phone = waUrl.pathname.replace("/", "");
-      const text = encodeURIComponent(waUrl.searchParams.get("text") || "");
-      const scheme = type === "business" ? "whatsapp-smb" : "whatsapp";
-      const isAndroid = /android/i.test(navigator.userAgent);
-
-      if (isAndroid) {
-        const pkg = type === "business" ? "com.whatsapp.w4b" : "com.whatsapp";
-        window.location.href = `intent://send?phone=${phone}&text=${text}#Intent;scheme=${scheme};package=${pkg};S.browser_fallback_url=${encodeURIComponent(data.whatsapp_url)};end`;
-      } else {
-        window.location.href = `${scheme}://send?phone=${phone}&text=${text}`;
-      }
+      const text = waUrl.searchParams.get("text") || "";
+      openWhatsAppChat(phone, text);
 
       setTimeout(() => navigate("/whatsapp-verify"), 500);
     } catch (err) {

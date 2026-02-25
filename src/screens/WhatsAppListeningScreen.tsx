@@ -4,6 +4,7 @@ import { motion } from "motion/react";
 import { useAuth } from "@/lib/auth";
 import { ArrowLeft } from "lucide-react";
 import { checkVerification, initWhatsApp } from "@/lib/api";
+import { openWhatsAppChat } from "@/lib/whatsapp";
 
 export default function WhatsAppListeningScreen() {
   const navigate = useNavigate();
@@ -47,34 +48,18 @@ export default function WhatsAppListeningScreen() {
   }, [code, loginWithToken, navigate]);
 
   const handleOpenWhatsApp = async () => {
-    const waType = localStorage.getItem("rivo_wa_type");
-    const isBusiness = waType === "business";
-
-    const openWithScheme = (phone: string, text: string) => {
-      const encoded = encodeURIComponent(text);
-      const isAndroid = /android/i.test(navigator.userAgent);
-      if (isAndroid) {
-        const scheme = isBusiness ? "whatsapp-smb" : "whatsapp";
-        const pkg = isBusiness ? "com.whatsapp.w4b" : "com.whatsapp";
-        const fallback = encodeURIComponent(`https://wa.me/${phone}?text=${encoded}`);
-        window.location.href = `intent://send?phone=${phone}&text=${encoded}#Intent;scheme=${scheme};package=${pkg};S.browser_fallback_url=${fallback};end`;
-      } else {
-        const scheme = isBusiness ? "whatsapp-smb" : "whatsapp";
-        window.location.href = `${scheme}://send?phone=${phone}&text=${encoded}`;
-      }
-    };
-
     if (code) {
-      openWithScheme("971545079577", `RIVO ${code}`);
+      openWhatsAppChat("971545079577", `RIVO ${code}`);
     } else {
       try {
+        const isBusiness = localStorage.getItem("rivo_wa_type") === "business";
         const referralCode = localStorage.getItem("rivo_referral_code") || "";
         const data = await initWhatsApp(referralCode, isBusiness);
         localStorage.setItem("rivo_verify_code", data.code);
         const waUrl = new URL(data.whatsapp_url);
         const phone = waUrl.pathname.replace("/", "");
         const text = waUrl.searchParams.get("text") || "";
-        openWithScheme(phone, text);
+        openWhatsAppChat(phone, text);
       } catch {
         console.error("Failed to re-init WhatsApp");
       }
