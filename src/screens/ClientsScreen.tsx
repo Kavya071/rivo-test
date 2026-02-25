@@ -18,12 +18,12 @@ interface ClientItem {
 const STATUS_COLORS: Record<string, string> = {
   DISBURSED: "text-rivo-green",
   FOL_RECEIVED: "text-emerald-400",
-  PREAPPROVED: "text-blue-500",
+  PREAPPROVED: "text-blue-400",
   SUBMITTED_TO_BANK: "text-cyan-400",
-  QUALIFIED: "text-yellow-500",
+  QUALIFIED: "text-yellow-400",
   CONTACTED: "text-purple-400",
   SUBMITTED: "text-gray-400",
-  DECLINED: "text-red-500",
+  DECLINED: "text-zinc-500",
 };
 
 const STATUS_LABELS: Record<string, string> = {
