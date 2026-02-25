@@ -21,9 +21,10 @@ const STATUS_COLORS: Record<string, string> = {
   QUALIFIED: "text-yellow-500",
   CONTACTED: "text-purple-400",
   SUBMITTED: "text-gray-400",
+  DECLINED: "text-red-500",
 };
 
-const STATUS_OPTIONS = ["All", "Submitted", "Contacted", "Qualified", "Approved", "Disbursed"];
+const STATUS_OPTIONS = ["All", "Submitted", "Contacted", "Qualified", "Approved", "Disbursed", "Declined"];
 
 export default function ClientsScreen() {
   const navigate = useNavigate();
