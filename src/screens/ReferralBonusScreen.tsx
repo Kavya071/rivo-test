@@ -6,6 +6,12 @@ import { useNavigate, Link } from "react-router-dom";
 import { Share2, X } from "lucide-react";
 import { useEffect, useState } from "react";
 
+function ordinal(n: number) {
+  const s = ["th", "st", "nd", "rd"];
+  const v = n % 100;
+  return n + (s[(v - 20) % 10] || s[v] || s[0]);
+}
+
 export default function ReferralBonusScreen() {
   const navigate = useNavigate();
   const { user } = useAuth();
@@ -49,29 +55,18 @@ export default function ReferralBonusScreen() {
           <div className="relative pl-4 space-y-12">
             <div className="absolute left-[23px] top-4 bottom-4 w-0.5 bg-zinc-800" />
 
-            <div className="relative flex items-center">
-              <div className="w-4 h-4 rounded-full bg-zinc-800 border-2 border-black z-10 mr-6" />
-              <div className="flex-1 flex justify-between items-baseline">
-                <span className="text-lg font-medium text-gray-400">1st Deal</span>
-                <span className="text-2xl font-medium text-white">AED {CONFIG.REFERRAL_BONUS.FIRST_DEAL}</span>
-              </div>
-            </div>
-
-            <div className="relative flex items-center">
-              <div className="w-4 h-4 rounded-full bg-zinc-800 border-2 border-black z-10 mr-6" />
-              <div className="flex-1 flex justify-between items-baseline">
-                <span className="text-lg font-medium text-gray-400">2nd Deal</span>
-                <span className="text-2xl font-medium text-white">AED {CONFIG.REFERRAL_BONUS.SECOND_DEAL}</span>
-              </div>
-            </div>
-
-            <div className="relative flex items-center">
-              <div className="w-4 h-4 rounded-full bg-rivo-green border-2 border-black z-10 mr-6 shadow-[0_0_10px_rgba(0,208,132,0.5)]" />
-              <div className="flex-1 flex justify-between items-baseline">
-                <span className="text-lg font-medium text-white">3rd Deal</span>
-                <span className="text-2xl font-medium text-rivo-green">AED {CONFIG.REFERRAL_BONUS.THIRD_DEAL}</span>
-              </div>
-            </div>
+            {CONFIG.REFERRAL_BONUS.AMOUNTS.map((amount, i) => {
+              const isLast = i === CONFIG.REFERRAL_BONUS.AMOUNTS.length - 1;
+              return (
+                <div key={i} className="relative flex items-center">
+                  <div className={`w-4 h-4 rounded-full border-2 border-black z-10 mr-6 ${isLast ? 'bg-rivo-green shadow-[0_0_10px_rgba(0,208,132,0.5)]' : 'bg-zinc-800'}`} />
+                  <div className="flex-1 flex justify-between items-baseline">
+                    <span className={`text-lg font-medium ${isLast ? 'text-white' : 'text-gray-400'}`}>{ordinal(i + 1)} Deal</span>
+                    <span className={`text-2xl font-medium ${isLast ? 'text-rivo-green' : 'text-white'}`}>AED {amount.toLocaleString()}</span>
+                  </div>
+                </div>
+              );
+            })}
           </div>
 
           <div className="mt-16 pt-8 border-t border-zinc-900">

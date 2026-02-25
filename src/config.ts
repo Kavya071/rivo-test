@@ -38,9 +38,7 @@ function buildConfig(data: Record<string, any> = {}) {
       },
     },
     REFERRAL_BONUS: {
-      FIRST_DEAL: bonuses[0],
-      SECOND_DEAL: bonuses[1],
-      THIRD_DEAL: bonuses[2],
+      AMOUNTS: bonuses as number[],
       TOTAL_POTENTIAL: bonuses.reduce((a: number, b: number) => a + b, 0),
     },
     LINKS: {

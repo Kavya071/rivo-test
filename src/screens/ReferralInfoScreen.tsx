@@ -5,6 +5,12 @@ import { motion } from "motion/react";
 import { CONFIG, loadConfig } from "@/config";
 import { useEffect, useState } from "react";
 
+function ordinal(n: number) {
+  const s = ["th", "st", "nd", "rd"];
+  const v = n % 100;
+  return n + (s[(v - 20) % 10] || s[v] || s[0]);
+}
+
 export default function ReferralInfoScreen() {
   const navigate = useNavigate();
   const [, setLoaded] = useState(false);
@@ -63,22 +69,16 @@ export default function ReferralInfoScreen() {
               </div>
               <h3 className="text-xl font-medium text-white mb-2">3. Earn Bonuses</h3>
               <p className="text-gray-400 leading-relaxed mb-4">
-                You earn a bonus for each of the first 3 successful disbursals from every agent you refer.
+                You earn a bonus for each of the first {CONFIG.REFERRAL_BONUS.AMOUNTS.length} successful disbursals from every agent you refer.
               </p>
-              
+
               <div className="space-y-3 bg-black/50 rounded-lg p-4 border border-zinc-800">
-                <div className="flex justify-between items-center">
-                  <span className="text-gray-400 text-sm">1st Deal</span>
-                  <span className="text-white font-medium">AED {CONFIG.REFERRAL_BONUS.FIRST_DEAL.toLocaleString()} Bonus</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-gray-400 text-sm">2nd Deal</span>
-                  <span className="text-white font-medium">AED {CONFIG.REFERRAL_BONUS.SECOND_DEAL.toLocaleString()} Bonus</span>
-                </div>
-                <div className="flex justify-between items-center">
-                  <span className="text-gray-400 text-sm">3rd Deal</span>
-                  <span className="text-white font-medium">AED {CONFIG.REFERRAL_BONUS.THIRD_DEAL.toLocaleString()} Bonus</span>
-                </div>
+                {CONFIG.REFERRAL_BONUS.AMOUNTS.map((amount, i) => (
+                  <div key={i} className="flex justify-between items-center">
+                    <span className="text-gray-400 text-sm">{ordinal(i + 1)} Deal</span>
+                    <span className="text-white font-medium">AED {amount.toLocaleString()} Bonus</span>
+                  </div>
+                ))}
                 <div className="pt-2 mt-2 border-t border-zinc-800 flex justify-between items-center">
                   <span className="text-rivo-green text-sm font-medium">Total Potential</span>
                   <span className="text-rivo-green font-bold">AED {CONFIG.REFERRAL_BONUS.TOTAL_POTENTIAL.toLocaleString()} per Agent</span>

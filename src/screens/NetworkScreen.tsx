@@ -116,14 +116,16 @@ export default function NetworkScreen() {
               <div className="w-8 h-8 rounded-full bg-zinc-900 border border-zinc-800 text-white flex items-center justify-center font-medium flex-shrink-0 text-sm">2</div>
               <div>
                 <h4 className="font-medium text-base text-white">They refer mortgages to Rivo</h4>
-                <p className="text-sm text-gray-400 mt-1 leading-relaxed">Bonuses unlock on their first 3 disbursals.</p>
+                <p className="text-sm text-gray-400 mt-1 leading-relaxed">Bonuses unlock on their first {CONFIG.REFERRAL_BONUS.AMOUNTS.length} disbursals.</p>
               </div>
             </div>
             <div className="flex space-x-5">
               <div className="w-8 h-8 rounded-full bg-rivo-green text-black flex items-center justify-center font-medium flex-shrink-0 text-sm">3</div>
               <div>
                 <h4 className="font-medium text-base text-white">You both get paid</h4>
-                <p className="text-sm text-gray-400 mt-1 leading-relaxed">AED {CONFIG.REFERRAL_BONUS.FIRST_DEAL}, {CONFIG.REFERRAL_BONUS.SECOND_DEAL}, then {CONFIG.REFERRAL_BONUS.THIRD_DEAL} respectively.</p>
+                <p className="text-sm text-gray-400 mt-1 leading-relaxed">
+                  {CONFIG.REFERRAL_BONUS.AMOUNTS.map((a, i) => `AED ${a.toLocaleString()}`).join(", ")} respectively.
+                </p>
               </div>
             </div>
           </div>
@@ -153,7 +155,7 @@ export default function NetworkScreen() {
                 <div key={agent.id} className={`flex justify-between items-center py-2 border-b border-zinc-900 ${agent.deals_count === 0 ? 'opacity-50' : ''}`}>
                   <div>
                     <h4 className="font-medium text-base text-white">{agent.name || "Agent"}</h4>
-                    <p className="text-xs text-gray-500 mt-1">Joined {formatDate(agent.created_at)} • {agent.deals_count}/3 Deals</p>
+                    <p className="text-xs text-gray-500 mt-1">Joined {formatDate(agent.created_at)} • {agent.deals_count}/{network?.bonus_summary.max_bonuses || CONFIG.REFERRAL_BONUS.AMOUNTS.length} Deals</p>
                   </div>
                   <div className="text-right">
                     <span className={`font-medium text-sm ${agent.bonus_earned > 0 ? 'text-rivo-green' : 'text-gray-500'}`}>
