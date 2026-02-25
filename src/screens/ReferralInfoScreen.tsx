@@ -3,12 +3,13 @@ import { ArrowLeft, Users, Zap, Briefcase } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { motion } from "motion/react";
 import { CONFIG, loadConfig } from "@/config";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export default function ReferralInfoScreen() {
   const navigate = useNavigate();
+  const [, setLoaded] = useState(false);
 
-  useEffect(() => { loadConfig(); }, []);
+  useEffect(() => { loadConfig().then(() => setLoaded(true)); }, []);
 
   return (
     <div className="flex flex-col min-h-screen bg-black pb-24">

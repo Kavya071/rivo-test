@@ -4,14 +4,15 @@ import { useAuth } from "@/lib/auth";
 import { motion } from "motion/react";
 import { useNavigate, Link } from "react-router-dom";
 import { Share2, X } from "lucide-react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 export default function ReferralBonusScreen() {
   const navigate = useNavigate();
   const { user } = useAuth();
 
+  const [, setConfigLoaded] = useState(false);
   useEffect(() => {
-    loadConfig();
+    loadConfig().then(() => setConfigLoaded(true));
   }, []);
 
   const handleShare = () => {

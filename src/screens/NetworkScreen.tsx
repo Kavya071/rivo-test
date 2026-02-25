@@ -4,7 +4,7 @@ import { useAuth } from "@/lib/auth";
 import { motion } from "motion/react";
 import { Copy, Share2, Users } from "lucide-react";
 import { Link } from "react-router-dom";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useReducer } from "react";
 import { getNetwork } from "@/lib/api";
 import { useToast } from "@/components/ui/Toast";
 
@@ -32,9 +32,10 @@ export default function NetworkScreen() {
   const { user } = useAuth();
   const { toast } = useToast();
   const [network, setNetwork] = useState<NetworkData | null>(null);
+  const [, rerender] = useReducer(x => x + 1, 0);
 
   useEffect(() => {
-    loadConfig();
+    loadConfig().then(() => rerender());
     getNetwork()
       .then(setNetwork)
       .catch(console.error);

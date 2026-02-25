@@ -22,8 +22,9 @@ export default function LeadSubmissionScreen() {
   const [error, setError] = useState("");
   const [phoneError, setPhoneError] = useState("");
 
+  const [, setConfigLoaded] = useState(false);
   useEffect(() => {
-    loadConfig();
+    loadConfig().then(() => setConfigLoaded(true));
   }, []);
 
   const calculateCommission = () => {
