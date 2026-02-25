@@ -44,7 +44,7 @@ export default function HomeScreen() {
 
         {/* Earnings Display */}
         <div className="mb-2">
-          <p className="text-sm text-gray-400 font-medium mb-1">Total Earnings</p>
+          <p className="text-sm text-gray-400 font-medium mb-1">Total Paid</p>
           <h2 className="text-5xl font-medium tracking-tight text-white">AED {totalEarned.toLocaleString()}</h2>
         </div>
 
