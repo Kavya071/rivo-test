@@ -149,18 +149,21 @@ export default function LeadSubmissionScreen() {
 
             <div className="space-y-2">
               <label className="text-sm font-medium text-gray-400 ml-1">Phone Number</label>
-              <div className="flex space-x-3">
-                <select
-                  value={countryCode}
-                  onChange={(e) => setCountryCode(e.target.value)}
-                  className="h-14 px-3 bg-zinc-900 rounded-lg border border-zinc-800 text-white font-medium appearance-none text-sm"
-                >
-                  {COUNTRY_CODES.map((c) => (
-                    <option key={c.code} value={c.code}>
-                      {c.flag} {c.code}
-                    </option>
-                  ))}
-                </select>
+              <div className="flex space-x-2">
+                <div className="relative">
+                  <select
+                    value={countryCode}
+                    onChange={(e) => setCountryCode(e.target.value)}
+                    className="h-14 pl-3 pr-8 bg-zinc-900 rounded-lg border border-zinc-800 text-white font-medium appearance-none text-sm focus:ring-2 focus:ring-rivo-green outline-none cursor-pointer"
+                  >
+                    {COUNTRY_CODES.map((c) => (
+                      <option key={c.code} value={c.code}>
+                        {c.flag} {c.code}
+                      </option>
+                    ))}
+                  </select>
+                  <svg className="absolute right-2 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500 pointer-events-none" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" /></svg>
+                </div>
                 <Input
                   type="tel"
                   placeholder="50 123 4567"
