@@ -56,15 +56,19 @@ export default function LandingScreen() {
 
   const startWhatsApp = async (type: "personal" | "business") => {
     const referralCode = localStorage.getItem("rivo_referral_code") || "";
+    // Open new tab immediately (while user gesture is valid) to avoid popup blocker
+    const waTab = window.open("", "_blank");
     try {
       const data = await initWhatsApp(referralCode, type === "business");
       localStorage.setItem("rivo_verify_code", data.code);
-      // Use wa.me URL directly — custom schemes (whatsapp://) get blocked
-      // after async calls because the browser no longer considers it a user gesture
-      window.location.href = data.whatsapp_url;
-      setTimeout(() => navigate("/whatsapp-verify"), 500);
+      // Redirect the pre-opened tab to WhatsApp
+      if (waTab) {
+        waTab.location.href = data.whatsapp_url;
+      }
+      navigate("/whatsapp-verify");
     } catch (err) {
       console.error("Failed to init WhatsApp", err);
+      if (waTab) waTab.close();
     }
   };
 
