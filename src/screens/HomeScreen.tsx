@@ -121,6 +121,11 @@ export default function HomeScreen() {
                   <img src={banner.thumbnail} alt="" className="w-full h-40 object-cover" />
                 )}
                 <div className="p-4">
+                  <div className="flex items-start gap-3">
+                    {banner.icon && (
+                      <span className="text-2xl flex-shrink-0">{banner.icon}</span>
+                    )}
+                    <div className="flex-1">
                   <h3 className="font-medium text-white text-base">{banner.title}</h3>
                   {banner.subtitle && (
                     <p className="text-sm text-gray-400 mt-1">{banner.subtitle}</p>
@@ -146,6 +151,8 @@ export default function HomeScreen() {
                       </a>
                     )
                   )}
+                    </div>
+                  </div>
                 </div>
               </motion.div>
             ))}
