@@ -2,7 +2,7 @@ import { CONFIG, loadConfig, HomeBanner } from "@/config";
 import { useAuth } from "@/lib/auth";
 import { motion } from "motion/react";
 import { useNavigate } from "react-router-dom";
-import { ArrowRight, ChevronRight, Users, ExternalLink } from "lucide-react";
+import { ArrowRight, ChevronRight, Users } from "lucide-react";
 import { useEffect, useState } from "react";
 
 export default function HomeScreen() {
@@ -126,15 +126,25 @@ export default function HomeScreen() {
                     <p className="text-sm text-gray-400 mt-1">{banner.subtitle}</p>
                   )}
                   {banner.cta_text && banner.cta_link && (
-                    <a
-                      href={banner.cta_link}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 mt-3 text-sm font-medium text-rivo-green hover:underline"
-                    >
-                      {banner.cta_text}
-                      <ExternalLink className="w-4 h-4" />
-                    </a>
+                    banner.cta_link.startsWith("/") ? (
+                      <button
+                        onClick={() => navigate(banner.cta_link)}
+                        className="inline-flex items-center gap-2 mt-3 text-sm font-medium text-rivo-green hover:underline"
+                      >
+                        {banner.cta_text}
+                        <ChevronRight className="w-4 h-4" />
+                      </button>
+                    ) : (
+                      <a
+                        href={banner.cta_link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="inline-flex items-center gap-2 mt-3 text-sm font-medium text-rivo-green hover:underline"
+                      >
+                        {banner.cta_text}
+                        <ChevronRight className="w-4 h-4" />
+                      </a>
+                    )
                   )}
                 </div>
               </motion.div>
