@@ -17,14 +17,37 @@ interface ClientItem {
 
 const STATUS_COLORS: Record<string, string> = {
   DISBURSED: "text-rivo-green",
-  APPROVED: "text-blue-500",
+  FOL_RECEIVED: "text-emerald-400",
+  PREAPPROVED: "text-blue-500",
+  SUBMITTED_TO_BANK: "text-cyan-400",
   QUALIFIED: "text-yellow-500",
   CONTACTED: "text-purple-400",
   SUBMITTED: "text-gray-400",
   DECLINED: "text-red-500",
 };
 
-const STATUS_OPTIONS = ["All", "Submitted", "Contacted", "Qualified", "Approved", "Disbursed", "Declined"];
+const STATUS_LABELS: Record<string, string> = {
+  SUBMITTED: "Submitted",
+  CONTACTED: "Contacted",
+  QUALIFIED: "Qualified",
+  SUBMITTED_TO_BANK: "Submitted to Bank",
+  PREAPPROVED: "Preapproved",
+  FOL_RECEIVED: "FOL Received",
+  DISBURSED: "Disbursed",
+  DECLINED: "Declined",
+};
+
+const STATUS_OPTIONS = [
+  { value: "All", label: "All" },
+  { value: "Submitted", label: "Submitted" },
+  { value: "Contacted", label: "Contacted" },
+  { value: "Qualified", label: "Qualified" },
+  { value: "Submitted_to_bank", label: "Submitted to Bank" },
+  { value: "Preapproved", label: "Preapproved" },
+  { value: "Fol_received", label: "FOL Received" },
+  { value: "Disbursed", label: "Disbursed" },
+  { value: "Declined", label: "Declined" },
+];
 
 export default function ClientsScreen() {
   const navigate = useNavigate();
@@ -98,15 +121,15 @@ export default function ClientsScreen() {
           <div className="flex flex-wrap gap-2 mt-3 pb-2">
             {STATUS_OPTIONS.map((s) => (
               <button
-                key={s}
-                onClick={() => setStatusFilter(s)}
+                key={s.value}
+                onClick={() => setStatusFilter(s.value)}
                 className={`px-3 py-1.5 rounded-full text-xs font-medium transition-colors ${
-                  statusFilter === s
+                  statusFilter === s.value
                     ? "bg-rivo-green text-black"
                     : "bg-zinc-900 text-gray-400 hover:bg-zinc-800"
                 }`}
               >
-                {s}
+                {s.label}
               </button>
             ))}
           </div>
@@ -137,7 +160,7 @@ export default function ClientsScreen() {
                   <p className="text-xs text-gray-500 mt-1">{formatDate(client.created_at)}</p>
                 </div>
                 <span className={`text-xs font-medium tracking-wide ${STATUS_COLORS[client.status] || "text-gray-400"}`}>
-                  {client.status}
+                  {STATUS_LABELS[client.status] || client.status}
                 </span>
               </div>
 
