@@ -30,11 +30,18 @@ export default function ProfileScreen() {
   const handleDelete = async () => {
     try {
       await deleteAccount();
-      await logout();
-      navigate("/");
     } catch {
       toast("Failed to delete account.", "error");
+      return;
     }
+    // Always clear local state after successful delete
+    localStorage.removeItem("rivo_token");
+    localStorage.removeItem("rivo_user");
+    localStorage.removeItem("rivo_referral_code");
+    localStorage.removeItem("rivo_wa_type");
+    localStorage.removeItem("rivo_verify_code");
+    await logout();
+    navigate("/");
   };
 
   const googleLogin = useGoogleLogin({
