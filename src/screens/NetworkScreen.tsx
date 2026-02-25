@@ -2,11 +2,12 @@ import { Button } from "@/components/ui/Button";
 import { CONFIG, loadConfig } from "@/config";
 import { useAuth } from "@/lib/auth";
 import { motion } from "motion/react";
-import { Copy, Share2, Users } from "lucide-react";
+import { Copy, Users } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useState, useEffect, useReducer } from "react";
 import { getNetwork } from "@/lib/api";
 import { useToast } from "@/components/ui/Toast";
+import { openWhatsAppShare } from "@/lib/whatsapp";
 
 interface NetworkAgent {
   id: string;
@@ -53,7 +54,7 @@ export default function NetworkScreen() {
     const message = CONFIG.MESSAGES.SHARE_TEXT.includes("{url}")
       ? CONFIG.MESSAGES.SHARE_TEXT.replace("{url}", url)
       : CONFIG.MESSAGES.SHARE_TEXT + url;
-    window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, "_blank");
+    openWhatsAppShare(message);
   };
 
   const formatDate = (dateStr: string) => {

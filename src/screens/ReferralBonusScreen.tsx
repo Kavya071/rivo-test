@@ -5,6 +5,7 @@ import { motion } from "motion/react";
 import { useNavigate, Link } from "react-router-dom";
 import { X } from "lucide-react";
 import { useEffect, useState } from "react";
+import { openWhatsAppShare } from "@/lib/whatsapp";
 
 function ordinal(n: number) {
   const s = ["th", "st", "nd", "rd"];
@@ -26,7 +27,7 @@ export default function ReferralBonusScreen() {
     const message = CONFIG.MESSAGES.SHARE_TEXT.includes("{url}")
       ? CONFIG.MESSAGES.SHARE_TEXT.replace("{url}", url)
       : CONFIG.MESSAGES.SHARE_TEXT + url;
-    window.open(`https://wa.me/?text=${encodeURIComponent(message)}`, "_blank");
+    openWhatsAppShare(message);
   };
 
   return (
