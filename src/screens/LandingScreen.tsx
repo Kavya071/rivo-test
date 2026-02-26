@@ -56,19 +56,17 @@ export default function LandingScreen() {
 
   const startWhatsApp = async (type: "personal" | "business") => {
     const referralCode = localStorage.getItem("rivo_referral_code") || "";
-    // Open new tab immediately (while user gesture is valid) to avoid popup blocker
-    const waTab = window.open("", "_blank");
     try {
       const data = await initWhatsApp(referralCode, type === "business");
       localStorage.setItem("rivo_verify_code", data.code);
-      // Redirect the pre-opened tab to WhatsApp
-      if (waTab) {
-        waTab.location.href = data.whatsapp_url;
-      }
+      // Navigate to listening screen first, then open WhatsApp in same tab.
+      // On mobile, wa.me opens the WhatsApp app natively and the browser stays.
       navigate("/whatsapp-verify");
+      setTimeout(() => {
+        window.location.href = data.whatsapp_url;
+      }, 100);
     } catch (err) {
       console.error("Failed to init WhatsApp", err);
-      if (waTab) waTab.close();
     }
   };
 
