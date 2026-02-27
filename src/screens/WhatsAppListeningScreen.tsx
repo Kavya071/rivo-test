@@ -14,6 +14,17 @@ export default function WhatsAppListeningScreen() {
 
   const code = localStorage.getItem("rivo_verify_code") || "";
 
+  const handleVerified = (data: { token: string; agent: { has_completed_first_action: boolean } }) => {
+    loginWithToken(data.token, data.agent);
+    localStorage.removeItem("rivo_verify_code");
+    localStorage.removeItem("rivo_referral_code");
+    if (!data.agent.has_completed_first_action) {
+      navigate("/referral-bonus", { replace: true });
+    } else {
+      navigate("/home", { replace: true });
+    }
+  };
+
   useEffect(() => {
     const interval = setInterval(() => {
       setDots((prev) => (prev.length >= 3 ? "." : prev + "."));
@@ -26,24 +37,31 @@ export default function WhatsAppListeningScreen() {
         const data = await checkVerification(code);
         if (data.verified) {
           clearInterval(pollInterval);
-          loginWithToken(data.token, data.agent);
-          localStorage.removeItem("rivo_verify_code");
-          localStorage.removeItem("rivo_referral_code");
-          // New agent → referral bonus screen, existing → home
-          if (!data.agent.has_completed_first_action) {
-            navigate("/referral-bonus", { replace: true });
-          } else {
-            navigate("/home", { replace: true });
-          }
+          handleVerified(data);
         }
       } catch {
         setAttempts((prev) => prev + 1);
       }
     }, 2000);
 
+    // When tab regains focus, check immediately (polling is throttled in background)
+    const handleVisibility = async () => {
+      if (document.visibilityState === "visible" && code) {
+        try {
+          const data = await checkVerification(code);
+          if (data.verified) {
+            clearInterval(pollInterval);
+            handleVerified(data);
+          }
+        } catch {}
+      }
+    };
+    document.addEventListener("visibilitychange", handleVisibility);
+
     return () => {
       clearInterval(interval);
       clearInterval(pollInterval);
+      document.removeEventListener("visibilitychange", handleVisibility);
     };
   }, [code, loginWithToken, navigate]);
 
