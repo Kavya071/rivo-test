@@ -202,20 +202,6 @@ export default function ProfileScreen() {
           <h3 className="font-medium text-white text-lg">Connect Accounts</h3>
 
           <div className="space-y-4">
-            <div className="flex items-end gap-3">
-              <div className="flex-1">
-                <Input
-                  label="Email Address"
-                  type="email"
-                  placeholder="name@example.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  readOnly={!isEditing}
-                  className={`bg-zinc-900 border-zinc-800 text-white h-12 ${!isEditing ? "opacity-70" : ""}`}
-                />
-              </div>
-            </div>
-
             {isEditing && !email && (
               <>
                 <button
@@ -230,7 +216,7 @@ export default function ProfileScreen() {
                     <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"/>
                   </svg>
                   <span className="text-sm font-medium text-white">
-                    {connectingGoogle ? "Connecting..." : "Connect Google"}
+                    {connectingGoogle ? "Connecting..." : "Continue with Google"}
                   </span>
                 </button>
 
@@ -248,11 +234,27 @@ export default function ProfileScreen() {
                     <path d="M18 4v16l-6-7 6-9z" fill="#23A249"/>
                   </svg>
                   <span className="text-sm font-medium text-white">
-                    {connectingOutlook ? "Connecting..." : "Connect Outlook"}
+                    {connectingOutlook ? "Connecting..." : "Continue with Outlook"}
                   </span>
                 </button>
+
+                <div className="flex items-center gap-3">
+                  <div className="flex-1 h-px bg-zinc-800" />
+                  <span className="text-sm text-gray-500">OR</span>
+                  <div className="flex-1 h-px bg-zinc-800" />
+                </div>
               </>
             )}
+
+            <Input
+              label="Email Address"
+              type="email"
+              placeholder="name@example.com"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              readOnly={!isEditing}
+              className={`bg-zinc-900 border-zinc-800 text-white h-12 ${!isEditing ? "opacity-70" : ""}`}
+            />
 
             {isEditing ? (
               <Button

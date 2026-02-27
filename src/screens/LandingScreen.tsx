@@ -57,17 +57,14 @@ export default function LandingScreen() {
 
   const startWhatsApp = async (type: "personal" | "business") => {
     const referralCode = localStorage.getItem("rivo_referral_code") || "";
-    // Open new tab immediately (while user gesture is valid) to avoid popup blocker
-    const waTab = window.open("", "_blank");
     try {
       const data = await initWhatsApp(referralCode, type === "business");
       localStorage.setItem("rivo_verify_code", data.code);
-      // Redirect the pre-opened tab to WhatsApp, keep PWA on listening screen
-      if (waTab) waTab.location.href = data.whatsapp_url;
+      localStorage.setItem("rivo_wa_pending", data.whatsapp_url);
+      // Go to listening screen — it will auto-open WhatsApp and poll for verification
       navigate("/whatsapp-verify");
     } catch (err) {
       console.error("Failed to init WhatsApp", err);
-      if (waTab) waTab.close();
     }
   };
 

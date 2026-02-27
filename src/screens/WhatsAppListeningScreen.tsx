@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useEffect, useRef, useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { motion } from "motion/react";
 import { useAuth } from "@/lib/auth";
 import { ArrowLeft } from "lucide-react";
@@ -8,11 +8,32 @@ import { openWhatsAppChat } from "@/lib/whatsapp";
 
 export default function WhatsAppListeningScreen() {
   const navigate = useNavigate();
+  const [searchParams] = useSearchParams();
   const { loginWithToken } = useAuth();
   const [dots, setDots] = useState(".");
   const [attempts, setAttempts] = useState(0);
+  const hasAutoOpened = useRef(false);
 
-  const code = localStorage.getItem("rivo_verify_code") || "";
+  // Code from URL param (verify link) or localStorage (normal flow)
+  const code = searchParams.get("code") || localStorage.getItem("rivo_verify_code") || "";
+
+  // Auto-open WhatsApp on mount via deep link (browser stays on this screen)
+  useEffect(() => {
+    const pendingUrl = localStorage.getItem("rivo_wa_pending");
+    if (pendingUrl && !hasAutoOpened.current) {
+      hasAutoOpened.current = true;
+      localStorage.removeItem("rivo_wa_pending");
+      try {
+        const url = new URL(pendingUrl);
+        const phone = url.pathname.replace("/", "");
+        const text = url.searchParams.get("text") || "";
+        openWhatsAppChat(phone, text);
+      } catch {
+        // Fallback: direct navigation
+        window.location.href = pendingUrl;
+      }
+    }
+  }, []);
 
   const handleVerified = (data: { token: string; agent: { has_completed_first_action: boolean } }) => {
     loginWithToken(data.token, data.agent);
