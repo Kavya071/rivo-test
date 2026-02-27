@@ -61,7 +61,7 @@ export default function LandingScreen() {
       const data = await initWhatsApp(referralCode, type === "business");
       localStorage.setItem("rivo_verify_code", data.code);
       localStorage.setItem("rivo_wa_pending", data.whatsapp_url);
-      // Go to listening screen — it will auto-open WhatsApp and poll for verification
+      // Go to listening screen — it auto-opens WhatsApp and polls as fallback
       navigate("/whatsapp-verify");
     } catch (err) {
       console.error("Failed to init WhatsApp", err);
