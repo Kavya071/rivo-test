@@ -15,7 +15,23 @@ export default function WhatsAppListeningScreen() {
   const hasAutoOpened = useRef(false);
 
   // Code from URL param (verify link) or localStorage (normal flow)
-  const code = searchParams.get("code") || localStorage.getItem("rivo_verify_code") || "";
+  const urlCode = searchParams.get("code");
+  const code = urlCode || localStorage.getItem("rivo_verify_code") || "";
+  const isFromVerifyLink = !!urlCode;
+
+  // If arriving from verify link, immediately check and redirect
+  useEffect(() => {
+    if (!isFromVerifyLink || !code) return;
+    checkVerification(code)
+      .then((data: any) => {
+        if (data.verified) {
+          handleVerified(data);
+        } else {
+          navigate("/", { replace: true });
+        }
+      })
+      .catch(() => navigate("/", { replace: true }));
+  }, [isFromVerifyLink, code]);
 
   // Auto-open WhatsApp on mount via deep link (browser stays on this screen)
   useEffect(() => {
@@ -104,6 +120,16 @@ export default function WhatsAppListeningScreen() {
       }
     }
   };
+
+  // If from verify link, show spinner while checking
+  if (isFromVerifyLink) {
+    return (
+      <div className="flex flex-col min-h-screen bg-black items-center justify-center">
+        <div className="w-8 h-8 border-2 border-rivo-green border-t-transparent rounded-full animate-spin" />
+        <p className="text-gray-400 mt-4 text-sm">Verifying...</p>
+      </div>
+    );
+  }
 
   return (
     <div className="flex flex-col min-h-screen bg-black p-6 relative">
