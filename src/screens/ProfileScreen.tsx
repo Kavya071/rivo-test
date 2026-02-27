@@ -238,11 +238,7 @@ export default function ProfileScreen() {
                   </span>
                 </button>
 
-                <div className="flex items-center gap-3">
-                  <div className="flex-1 h-px bg-zinc-800" />
-                  <span className="text-sm text-gray-500">OR</span>
-                  <div className="flex-1 h-px bg-zinc-800" />
-                </div>
+                <p className="text-sm text-gray-500 text-center">or</p>
               </>
             )}
 
