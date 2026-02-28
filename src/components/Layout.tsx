@@ -2,6 +2,7 @@ import { Outlet, useLocation, Link } from "react-router-dom";
 import { useAuth } from "@/lib/auth";
 import { Home, Briefcase, Users, User } from "lucide-react";
 import { cn } from "@/lib/utils";
+import InstallPrompt from "@/components/InstallPrompt";
 
 export default function Layout() {
   const { isAuthenticated } = useAuth();
@@ -25,6 +26,8 @@ export default function Layout() {
             <NavItem to="/profile" icon={User} label="Profile" active={location.pathname === "/profile"} />
           </nav>
         )}
+
+        <InstallPrompt hasNav={!hideNav} />
       </div>
     </div>
   );
