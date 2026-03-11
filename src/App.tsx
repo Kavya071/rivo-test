@@ -19,6 +19,7 @@ import TermsScreen from "@/screens/TermsScreen";
 import PrivacyScreen from "@/screens/PrivacyScreen";
 import BonusTermsScreen from "@/screens/BonusTermsScreen";
 import MortgageCalculatorScreen from "@/screens/MortgageCalculatorScreen";
+import EligibilityCheckScreen from "@/screens/EligibilityCheckScreen";
 
 function ProtectedRoute({ children }: { children: React.ReactNode }) {
   const { isAuthenticated } = useAuth();
@@ -43,6 +44,7 @@ export default function App() {
             <Route path="/bonus-terms" element={<BonusTermsScreen />} />
             <Route path="/referral-info" element={<ReferralInfoScreen />} />
             <Route path="/mortgage-calculator" element={<MortgageCalculatorScreen />} />
+            <Route path="/eligibility-check" element={<EligibilityCheckScreen />} />
             <Route
               path="/referral-bonus"
               element={

@@ -9,7 +9,7 @@ export default function Layout() {
   const location = useLocation();
 
   // Hide bottom nav on onboarding screens
-  const hideNav = !isAuthenticated || ["/", "/referral-bonus", "/terms", "/privacy", "/bonus-terms", "/referral-info", "/referral-success", "/whatsapp-verify", "/mortgage-calculator"].includes(location.pathname);
+  const hideNav = !isAuthenticated || ["/", "/referral-bonus", "/terms", "/privacy", "/bonus-terms", "/referral-info", "/referral-success", "/whatsapp-verify", "/mortgage-calculator", "/eligibility-check"].includes(location.pathname);
 
   return (
     <div className="min-h-screen bg-black flex justify-center">
